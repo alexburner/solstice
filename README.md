@@ -2,7 +2,7 @@
 
 Visualization of current year sun cycles
 
-# development
+## development
 
 ```sh
 # Installation
