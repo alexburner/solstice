@@ -1,0 +1,65 @@
+{
+  "name": "solstice",
+  "version": "1.0.0",
+  "description": "Visualization of current year sun cycles",
+  "engines": {
+    "node": "11.6.0",
+    "npm": "6.5.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rm -rf ./docs && parcel build --out-dir ./docs --public-url ./ ./src/index.html",
+    "dev": "rm -rf ./dev && parcel --out-dir dev ./src/index.html",
+    "tsc": "tsc --watch --noEmit",
+    "prettier:once": "prettier --write './src/**/*.+(json|md|scss|ts|tsx)'",
+    "tslint:once": "tslint --fix --force -p ./tsconfig.json './src/**/*.+(ts|tsx)'",
+    "fix:once": "npm run prettier:once && npm run tslint:once",
+    "prettier": "npm run prettier:once && onchange 'src/**/*.*' -- npm run prettier:once",
+    "tslint": "npm run tslint:once && onchange 'src/**/*.*' -- npm run tslint:once",
+    "fix": "npm run fix:once && onchange 'src/**/*.*' -- npm run fix:once",
+    "clean": "rm -rf .cache && rm -rf ./dev"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alexburner/solsticeg.git"
+  },
+  "keywords": [
+    "daylight",
+    "solstice",
+    "equinox",
+    "seasons",
+    "year",
+    "calendar",
+    "date",
+    "sun",
+    "cycles",
+    "visualization"
+  ],
+  "author": "aburner",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alexburner/solstice/issues"
+  },
+  "homepage": "https://github.com/alexburner/solstice#readme",
+  "devDependencies": {
+    "@types/react": "16.8.17",
+    "@types/react-dom": "16.8.4",
+    "D": "1.0.0",
+    "onchange": "5.2.0",
+    "parcel-bundler": "1.12.3",
+    "prettier": "1.17.1",
+    "sass": "1.20.1",
+    "tslint": "5.16.0",
+    "tslint-config-prettier": "1.18.0",
+    "tslint-divid": "1.3.0",
+    "tslint-immutable": "5.5.2",
+    "tslint-microsoft-contrib": "6.1.1",
+    "tslint-misc-rules": "3.5.1",
+    "tslint-react": "4.0.0",
+    "typescript": "3.4.5"
+  },
+  "dependencies": {
+    "react": "16.8.6",
+    "react-dom": "16.8.6"
+  }
+}
