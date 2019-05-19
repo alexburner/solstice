@@ -1,7 +1,5 @@
-import { createElement } from "react";
-import { render } from "react-dom";
+const root = document.getElementById('root')
+if (!root) throw new Error('Failed to find root element')
 
-import { Root } from "./components/Root";
-
-// tslint:disable-next-line:no-expression-statement
-render(createElement(Root), document.getElementById("root"));
+// tslint-disable-next-line: no-expression-statement
+root.appendChild(document.createTextNode('Hello World'))
