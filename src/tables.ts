@@ -4,6 +4,8 @@ import {
   getSeasonColor,
   getQuarterColor,
 } from './colors'
+import { getSeason, getIndexInSeason } from './seasons'
+import { isSameDay } from 'date-fns'
 
 type TableMaker = (now: Date, dates: (Date | null)[]) => HTMLTableElement
 
@@ -24,7 +26,7 @@ const makeElements = (
   return { table, cells }
 }
 
-export const makeDaysTable: TableMaker = (_now, dates) => {
+export const makeDaysTable: TableMaker = (now, dates) => {
   const { table, cells } = makeElements(dates.length)
   cells.forEach((cell, i) => {
     const date = dates[i]
@@ -36,12 +38,30 @@ export const makeDaysTable: TableMaker = (_now, dates) => {
       date.getMonth(),
       date.getDate(),
     )
+
+    if (
+      getIndexInSeason(
+        date,
+        getSeason(date.getFullYear(), date.getMonth(), date.getDate()),
+      ) === 0
+    ) {
+      div.appendChild(document.createTextNode('○'))
+      div.style.color = '#FFFFFF99'
+      div.style.fontSize = '19px'
+    }
+
+    if (isSameDay(now, date)) {
+      div.appendChild(document.createTextNode('●'))
+      div.style.color = '#FFFFFF99'
+      div.style.fontSize = '19px'
+    }
+
     cell.appendChild(div)
   })
   return table
 }
 
-export const makeMonthsTable: TableMaker = (_now, dates) => {
+export const makeMonthsTable: TableMaker = (now, dates) => {
   const { table, cells } = makeElements(dates.length)
   cells.forEach((cell, i) => {
     const date = dates[i]
@@ -53,12 +73,29 @@ export const makeMonthsTable: TableMaker = (_now, dates) => {
       date.getMonth(),
     )
 
+    if (
+      getIndexInSeason(
+        date,
+        getSeason(date.getFullYear(), date.getMonth(), date.getDate()),
+      ) === 0
+    ) {
+      div.appendChild(document.createTextNode('○'))
+      div.style.color = '#FFFFFF99'
+      div.style.fontSize = '19px'
+    }
+
+    if (isSameDay(now, date)) {
+      div.appendChild(document.createTextNode('●'))
+      div.style.color = '#FFFFFF99'
+      div.style.fontSize = '19px'
+    }
+
     cell.appendChild(div)
   })
   return table
 }
 
-export const makeSeasonsTable: TableMaker = (_now, dates) => {
+export const makeSeasonsTable: TableMaker = (now, dates) => {
   const { table, cells } = makeElements(dates.length)
   cells.forEach((cell, i) => {
     const date = dates[i]
@@ -70,12 +107,30 @@ export const makeSeasonsTable: TableMaker = (_now, dates) => {
       date.getMonth(),
       date.getDate(),
     )
+
+    if (
+      getIndexInSeason(
+        date,
+        getSeason(date.getFullYear(), date.getMonth(), date.getDate()),
+      ) === 0
+    ) {
+      div.appendChild(document.createTextNode('○'))
+      div.style.color = '#FFFFFF99'
+      div.style.fontSize = '19px'
+    }
+
+    if (isSameDay(now, date)) {
+      div.appendChild(document.createTextNode('●'))
+      div.style.color = '#FFFFFF99'
+      div.style.fontSize = '19px'
+    }
+
     cell.appendChild(div)
   })
   return table
 }
 
-export const makeQuartersTable: TableMaker = (_now, dates) => {
+export const makeQuartersTable: TableMaker = (now, dates) => {
   const { table, cells } = makeElements(dates.length)
   cells.forEach((cell, i) => {
     const date = dates[i]
@@ -86,6 +141,24 @@ export const makeQuartersTable: TableMaker = (_now, dates) => {
       date.getFullYear(),
       date.getMonth(),
     )
+
+    if (
+      getIndexInSeason(
+        date,
+        getSeason(date.getFullYear(), date.getMonth(), date.getDate()),
+      ) === 0
+    ) {
+      div.appendChild(document.createTextNode('○'))
+      div.style.color = '#FFFFFF99'
+      div.style.fontSize = '19px'
+    }
+
+    if (isSameDay(now, date)) {
+      div.appendChild(document.createTextNode('●'))
+      div.style.color = '#FFFFFF99'
+      div.style.fontSize = '19px'
+    }
+
     cell.appendChild(div)
   })
   return table
