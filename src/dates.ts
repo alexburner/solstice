@@ -5,7 +5,7 @@ const HOURS_24_MS = 24 * 60 * 60 * 1000
  * @param month 0-11
  * @param year XXXX
  */
-export const getMonthDays = (month: number, year: number): number =>
+export const getMonthDays = (year: number, month: number): number =>
   new Date(year, month + 1, 0).getDate()
 
 /**

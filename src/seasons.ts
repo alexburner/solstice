@@ -14,44 +14,46 @@ export interface Season {
 }
 
 // TODO use real date/location math
-export const getSeason = (date: Date): Season => {
-  const month = date.getMonth()
-  const day = date.getDate()
+export const getSeason = (year: number, month: number, day: number): Season => {
   if (month < 2 || (month === 2 && day < 20)) {
     return {
       name: SeasonName.Winter,
-      start: new Date(date.getFullYear() - 1, 11, 21),
+      start: new Date(year - 1, 11, 21),
       length: 89,
     }
   }
   if (month < 5 || (month === 5 && day < 21)) {
     return {
       name: SeasonName.Spring,
-      start: new Date(date.getFullYear(), 2, 20),
+      start: new Date(year, 2, 20),
       length: 93,
     }
   }
   if (month < 8 || (month === 8 && day < 22)) {
     return {
       name: SeasonName.Summer,
-      start: new Date(date.getFullYear(), 5, 21),
+      start: new Date(year, 5, 21),
       length: 93,
     }
   }
   if (month < 11 || (month === 11 && day < 21)) {
     return {
       name: SeasonName.Autumn,
-      start: new Date(date.getFullYear(), 8, 22),
+      start: new Date(year, 8, 22),
       length: 90,
     }
   }
 
   // Winter wraps
-  return {
-    name: SeasonName.Winter,
-    start: new Date(date.getFullYear(), 11, 21),
-    length: 89,
+  if (month === 11 && day >= 21) {
+    return {
+      name: SeasonName.Winter,
+      start: new Date(year, 11, 21),
+      length: 89,
+    }
   }
+
+  throw new Error('Invalid date provided')
 }
 
 export const getIndexInSeason = (date: Date, season: Season): number => {
@@ -73,7 +75,7 @@ export const getNextSeasonName = (name: SeasonName): SeasonName => {
 
 export const getSeasonStartColor = (name: SeasonName): string => {
   let h = 0
-  const s = 60
+  const s = 55
   const l = 60
   switch (name) {
     case SeasonName.Spring:

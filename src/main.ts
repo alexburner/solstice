@@ -1,5 +1,10 @@
 import { makeYearDates } from './dates'
-import { makeDaysTable, makeMonthsTable } from './tables'
+import {
+  makeDaysTable,
+  makeMonthsTable,
+  makeSeasonsTable,
+  makeQuartersTable,
+} from './tables'
 
 const root = document.getElementById('root')
 
@@ -10,3 +15,5 @@ const dates = makeYearDates(now)
 
 root.appendChild(makeDaysTable(now, dates))
 root.appendChild(makeMonthsTable(now, dates))
+root.appendChild(makeQuartersTable(now, dates))
+root.appendChild(makeSeasonsTable(now, dates))

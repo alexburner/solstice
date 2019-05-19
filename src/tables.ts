@@ -1,8 +1,11 @@
-import { getDayColor } from './colors'
+import {
+  getDayColor,
+  getMonthColor,
+  getSeasonColor,
+  getQuarterColor,
+} from './colors'
 
 type TableMaker = (now: Date, dates: (Date | null)[]) => HTMLTableElement
-
-const seasonMonths = new Set([3 - 1, 6 - 1, 9 - 1, 12 - 1])
 
 const makeElements = (
   dayCount: number,
@@ -28,40 +31,61 @@ export const makeDaysTable: TableMaker = (_now, dates) => {
     if (date === null) return
     const div = document.createElement('div')
     div.className = 'fill'
-    div.style.backgroundColor = getDayColor(date)
+    div.style.backgroundColor = getDayColor(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate(),
+    )
     cell.appendChild(div)
   })
   return table
 }
 
-export const makeMonthsTable: TableMaker = (now, dates) => {
-  const nowMonth = now.getMonth()
-  const nowDay = now.getDate()
+export const makeMonthsTable: TableMaker = (_now, dates) => {
   const { table, cells } = makeElements(dates.length)
   cells.forEach((cell, i) => {
     const date = dates[i]
     if (date === null) return
-    // const year = date.getFullYear()
-    const month = date.getMonth()
-    // const monthDays = getMonthDays(month, year)
-    const monthDay = date.getDate()
-    // const weekDay = date.getDay()
     const div = document.createElement('div')
     div.className = 'fill'
-    div.style.backgroundColor = `hsl(${-360 * (month / 12)}, 40%, 60%)`
+    div.style.backgroundColor = getMonthColor(
+      date.getFullYear(),
+      date.getMonth(),
+    )
 
-    if (seasonMonths.has(month) && monthDay === 21) {
-      div.appendChild(document.createTextNode('⦵'))
-      div.style.color = '#FFFFFF99'
-      div.style.fontSize = '19px'
-    }
+    cell.appendChild(div)
+  })
+  return table
+}
 
-    if (month === nowMonth && monthDay === nowDay) {
-      div.appendChild(document.createTextNode('⟐'))
-      div.style.color = '#00000099'
-      div.style.fontSize = '19px'
-    }
+export const makeSeasonsTable: TableMaker = (_now, dates) => {
+  const { table, cells } = makeElements(dates.length)
+  cells.forEach((cell, i) => {
+    const date = dates[i]
+    if (date === null) return
+    const div = document.createElement('div')
+    div.className = 'fill'
+    div.style.backgroundColor = getSeasonColor(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate(),
+    )
+    cell.appendChild(div)
+  })
+  return table
+}
 
+export const makeQuartersTable: TableMaker = (_now, dates) => {
+  const { table, cells } = makeElements(dates.length)
+  cells.forEach((cell, i) => {
+    const date = dates[i]
+    if (date === null) return
+    const div = document.createElement('div')
+    div.className = 'fill'
+    div.style.backgroundColor = getQuarterColor(
+      date.getFullYear(),
+      date.getMonth(),
+    )
     cell.appendChild(div)
   })
   return table
