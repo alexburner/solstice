@@ -1,3 +1,5 @@
+import { getDayColor } from './colors'
+
 type TableMaker = (now: Date, dates: (Date | null)[]) => HTMLTableElement
 
 const seasonMonths = new Set([3 - 1, 6 - 1, 9 - 1, 12 - 1])
@@ -20,17 +22,14 @@ const makeElements = (
 }
 
 export const makeDaysTable: TableMaker = (_now, dates) => {
-  const SHIFT = 228
   const { table, cells } = makeElements(dates.length)
-  let count = 0
   cells.forEach((cell, i) => {
     const date = dates[i]
     if (date === null) return
     const div = document.createElement('div')
     div.className = 'fill'
-    div.style.backgroundColor = `hsl(${-360 * (count / 365) + SHIFT}, 40%, 60%)`
+    div.style.backgroundColor = getDayColor(date)
     cell.appendChild(div)
-    count++
   })
   return table
 }
