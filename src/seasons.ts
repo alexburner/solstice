@@ -49,7 +49,7 @@ export const getSeason = (date: Date): Season => {
   // Winter wraps
   return {
     name: SeasonName.Winter,
-    start: new Date(date.getFullYear() - 1, 11, 21),
+    start: new Date(date.getFullYear(), 11, 21),
     length: 89,
   }
 }
