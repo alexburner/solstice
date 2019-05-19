@@ -1,0 +1,37 @@
+:root {
+  --cell-size: 16px;
+}
+
+body {
+  background: #333;
+  color: red;
+  box-sizing: border-box;
+  padding: 24px;
+}
+
+table {
+  margin: 24px auto;
+  border-collapse: collapse;
+}
+
+td {
+  position: relative;
+  padding: 0;
+  width: var(--cell-size);
+  height: var(--cell-size);
+  line-height: var(--cell-size);
+  text-align: center;
+
+  /* border: 1px solid white; */
+}
+
+.fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+
+  /* border: 1px solid white; */
+}
