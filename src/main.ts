@@ -15,5 +15,5 @@ const dates = makeYearDates(now)
 
 root.appendChild(makeDaysTable(now, dates))
 root.appendChild(makeMonthsTable(now, dates))
-root.appendChild(makeQuartersTable(now, dates))
 root.appendChild(makeSeasonsTable(now, dates))
+root.appendChild(makeQuartersTable(now, dates))

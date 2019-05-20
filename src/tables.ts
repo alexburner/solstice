@@ -5,6 +5,9 @@ import { getQuarter, getQuarterDay } from './quarters'
 
 type TableMaker = (now: Date, dates: (Date | null)[]) => HTMLTableElement
 
+const MARK_COLOR = '#444'
+const BORDER_STYLE = `1px solid ${MARK_COLOR}`
+
 const makeElements = (
   dayCount: number,
 ): {
@@ -24,6 +27,7 @@ const makeElements = (
 
 export const makeDaysTable: TableMaker = (now, dates) => {
   const { table, cells } = makeElements(dates.length)
+  let count = 0
   cells.forEach((cell, i) => {
     const date = dates[i]
     if (date === null) return
@@ -34,23 +38,31 @@ export const makeDaysTable: TableMaker = (now, dates) => {
     const seasonDay = getSeasonDay(new Date(year, month, monthDay), season)
     const color = getDayColor(season, seasonDay)
 
+    const weekDay = date.getDay()
+
     const div = document.createElement('div')
     div.className = 'fill'
     div.style.backgroundColor = color
 
     if (seasonDay === 1) {
       div.appendChild(document.createTextNode('○'))
-      div.style.color = '#333333DD'
+      div.style.color = MARK_COLOR
       div.style.fontSize = '19px'
     }
 
     if (isSameDay(now, date)) {
       div.appendChild(document.createTextNode('●'))
-      div.style.color = '#333333DD'
+      div.style.color = MARK_COLOR
       div.style.fontSize = '19px'
     }
 
+    div.style.borderLeft = BORDER_STYLE
+    if (weekDay !== 6) {
+      div.style.borderTop = BORDER_STYLE
+    }
+
     cell.appendChild(div)
+    count++
   })
   return table
 }
@@ -76,18 +88,64 @@ export const makeMonthsTable: TableMaker = (now, dates) => {
 
     if (seasonDay === 1) {
       div.appendChild(document.createTextNode('○'))
-      div.style.color = '#333333DD'
+      div.style.color = MARK_COLOR
       div.style.fontSize = '19px'
     }
 
     if (isSameDay(now, date)) {
       div.appendChild(document.createTextNode('●'))
-      div.style.color = '#333333DD'
+      div.style.color = MARK_COLOR
       div.style.fontSize = '19px'
     }
 
-    if (monthDay < 8 && i > 14) div.style.left = '1px'
-    if (monthDay === monthDays && weekDay !== 6) div.style.top = '1px'
+    if (monthDay < 8) {
+      div.style.borderLeft = BORDER_STYLE
+    }
+    if (monthDay === monthDays && weekDay !== 6) {
+      div.style.borderTop = BORDER_STYLE
+    }
+
+    cell.appendChild(div)
+  })
+  return table
+}
+
+export const makeSeasonsTable: TableMaker = (now, dates) => {
+  const { table, cells } = makeElements(dates.length)
+  cells.forEach((cell, i) => {
+    const date = dates[i]
+    if (date === null) return
+    const year = date.getFullYear()
+    const month = date.getMonth()
+    const monthDay = date.getDate()
+    const season = getSeason(year, month, monthDay)
+    const seasonDay = getSeasonDay(new Date(year, month, monthDay), season)
+    const color = getDayColor(season, seasonDay)
+
+    const weekDay = date.getDay()
+
+    const div = document.createElement('div')
+    div.className = 'fill'
+    div.style.backgroundColor = color
+
+    if (seasonDay === 1) {
+      div.appendChild(document.createTextNode('○'))
+      div.style.color = MARK_COLOR
+      div.style.fontSize = '19px'
+    }
+
+    if (isSameDay(now, date)) {
+      div.appendChild(document.createTextNode('●'))
+      div.style.color = MARK_COLOR
+      div.style.fontSize = '19px'
+    }
+
+    if (seasonDay < 8) {
+      div.style.borderLeft = BORDER_STYLE
+    }
+    if (seasonDay === season.length && weekDay !== 6) {
+      div.style.borderTop = BORDER_STYLE
+    }
 
     cell.appendChild(div)
   })
@@ -116,56 +174,22 @@ export const makeQuartersTable: TableMaker = (now, dates) => {
 
     if (seasonDay === 1) {
       div.appendChild(document.createTextNode('○'))
-      div.style.color = '#333333DD'
+      div.style.color = MARK_COLOR
       div.style.fontSize = '19px'
     }
 
     if (isSameDay(now, date)) {
       div.appendChild(document.createTextNode('●'))
-      div.style.color = '#333333DD'
+      div.style.color = MARK_COLOR
       div.style.fontSize = '19px'
     }
 
-    if (quarterDay < 8 && i > 14) div.style.left = '1px'
-    if (quarterDay === quarter.length && weekDay !== 6) div.style.top = '1px'
-
-    cell.appendChild(div)
-  })
-  return table
-}
-
-export const makeSeasonsTable: TableMaker = (now, dates) => {
-  const { table, cells } = makeElements(dates.length)
-  cells.forEach((cell, i) => {
-    const date = dates[i]
-    if (date === null) return
-    const year = date.getFullYear()
-    const month = date.getMonth()
-    const monthDay = date.getDate()
-    const season = getSeason(year, month, monthDay)
-    const seasonDay = getSeasonDay(new Date(year, month, monthDay), season)
-    const color = getDayColor(season, seasonDay)
-
-    const weekDay = date.getDay()
-
-    const div = document.createElement('div')
-    div.className = 'fill'
-    div.style.backgroundColor = color
-
-    if (seasonDay === 1) {
-      div.appendChild(document.createTextNode('○'))
-      div.style.color = '#333333DD'
-      div.style.fontSize = '19px'
+    if (quarterDay < 8) {
+      div.style.borderLeft = BORDER_STYLE
     }
-
-    if (isSameDay(now, date)) {
-      div.appendChild(document.createTextNode('●'))
-      div.style.color = '#333333DD'
-      div.style.fontSize = '19px'
+    if (quarterDay === quarter.length && weekDay !== 6) {
+      div.style.borderTop = BORDER_STYLE
     }
-
-    if (seasonDay < 8 && i > 14) div.style.left = '1px'
-    if (seasonDay === season.length && weekDay !== 6) div.style.top = '1px'
 
     cell.appendChild(div)
   })
