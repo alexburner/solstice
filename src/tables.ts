@@ -1,5 +1,4 @@
-import { getDayColor } from './colors'
-import { getSeason, getSeasonDay } from './seasons'
+import { getSeason, getSeasonDay, getDayColor } from './seasons'
 import { isSameDay } from 'date-fns'
 import { getMonthDays } from './dates'
 import { getQuarter, getQuarterDay } from './quarters'

@@ -1,4 +1,5 @@
 import { differenceInCalendarDays } from 'date-fns'
+import { interpolateHcl } from 'd3-interpolate'
 
 export const enum SeasonName {
   Spring = 'Spring',
@@ -96,4 +97,12 @@ export const getSeasonStartColor = (name: SeasonName): string => {
       break
   }
   return `hsl(${h}, ${s}%, ${l}%)`
+}
+
+export const getDayColor = (season: Season, index: number): string => {
+  const percentage = index / (season.length - 1)
+  const colorStart = getSeasonStartColor(season.name)
+  const colorEnd = getSeasonStartColor(getNextSeasonName(season.name))
+  const interpolater = interpolateHcl(colorStart, colorEnd)
+  return interpolater(percentage)
 }
