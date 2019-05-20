@@ -40,13 +40,13 @@ export const makeDaysTable: TableMaker = (now, dates) => {
 
     if (seasonDay === 1) {
       div.appendChild(document.createTextNode('○'))
-      div.style.color = '#FFFFFF99'
+      div.style.color = '#333333DD'
       div.style.fontSize = '19px'
     }
 
     if (isSameDay(now, date)) {
       div.appendChild(document.createTextNode('●'))
-      div.style.color = '#FFFFFF99'
+      div.style.color = '#333333DD'
       div.style.fontSize = '19px'
     }
 
@@ -76,13 +76,13 @@ export const makeMonthsTable: TableMaker = (now, dates) => {
 
     if (seasonDay === 1) {
       div.appendChild(document.createTextNode('○'))
-      div.style.color = '#FFFFFF99'
+      div.style.color = '#333333DD'
       div.style.fontSize = '19px'
     }
 
     if (isSameDay(now, date)) {
       div.appendChild(document.createTextNode('●'))
-      div.style.color = '#FFFFFF99'
+      div.style.color = '#333333DD'
       div.style.fontSize = '19px'
     }
 
@@ -116,13 +116,13 @@ export const makeQuartersTable: TableMaker = (now, dates) => {
 
     if (seasonDay === 1) {
       div.appendChild(document.createTextNode('○'))
-      div.style.color = '#FFFFFF99'
+      div.style.color = '#333333DD'
       div.style.fontSize = '19px'
     }
 
     if (isSameDay(now, date)) {
       div.appendChild(document.createTextNode('●'))
-      div.style.color = '#FFFFFF99'
+      div.style.color = '#333333DD'
       div.style.fontSize = '19px'
     }
 
@@ -154,13 +154,13 @@ export const makeSeasonsTable: TableMaker = (now, dates) => {
 
     if (seasonDay === 1) {
       div.appendChild(document.createTextNode('○'))
-      div.style.color = '#FFFFFF99'
+      div.style.color = '#333333DD'
       div.style.fontSize = '19px'
     }
 
     if (isSameDay(now, date)) {
       div.appendChild(document.createTextNode('●'))
-      div.style.color = '#FFFFFF99'
+      div.style.color = '#333333DD'
       div.style.fontSize = '19px'
     }
 
