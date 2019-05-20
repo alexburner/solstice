@@ -1,11 +1,8 @@
-import {
-  getDayColor,
-  getMonthColor,
-  getSeasonColor,
-  getQuarterColor,
-} from './colors'
-import { getSeason, getIndexInSeason } from './seasons'
+import { getDayColor } from './colors'
+import { getSeason, getSeasonDay } from './seasons'
 import { isSameDay } from 'date-fns'
+import { getMonthDays } from './dates'
+import { getQuarter, getQuarterDay } from './quarters'
 
 type TableMaker = (now: Date, dates: (Date | null)[]) => HTMLTableElement
 
@@ -31,20 +28,18 @@ export const makeDaysTable: TableMaker = (now, dates) => {
   cells.forEach((cell, i) => {
     const date = dates[i]
     if (date === null) return
+    const year = date.getFullYear()
+    const month = date.getMonth()
+    const monthDay = date.getDate()
+    const season = getSeason(year, month, monthDay)
+    const seasonDay = getSeasonDay(new Date(year, month, monthDay), season)
+    const color = getDayColor(season, seasonDay)
+
     const div = document.createElement('div')
     div.className = 'fill'
-    div.style.backgroundColor = getDayColor(
-      date.getFullYear(),
-      date.getMonth(),
-      date.getDate(),
-    )
+    div.style.backgroundColor = color
 
-    if (
-      getIndexInSeason(
-        date,
-        getSeason(date.getFullYear(), date.getMonth(), date.getDate()),
-      ) === 0
-    ) {
+    if (seasonDay === 1) {
       div.appendChild(document.createTextNode('○'))
       div.style.color = '#FFFFFF99'
       div.style.fontSize = '19px'
@@ -66,19 +61,21 @@ export const makeMonthsTable: TableMaker = (now, dates) => {
   cells.forEach((cell, i) => {
     const date = dates[i]
     if (date === null) return
+    const year = date.getFullYear()
+    const month = date.getMonth()
+    const monthDay = date.getDate()
+    const season = getSeason(year, month, monthDay)
+    const seasonDay = getSeasonDay(new Date(year, month, monthDay), season)
+    const color = getDayColor(season, seasonDay)
+
+    const monthDays = getMonthDays(year, month)
+    const weekDay = date.getDay()
+
     const div = document.createElement('div')
     div.className = 'fill'
-    div.style.backgroundColor = getMonthColor(
-      date.getFullYear(),
-      date.getMonth(),
-    )
+    div.style.backgroundColor = color
 
-    if (
-      getIndexInSeason(
-        date,
-        getSeason(date.getFullYear(), date.getMonth(), date.getDate()),
-      ) === 0
-    ) {
+    if (seasonDay === 1) {
       div.appendChild(document.createTextNode('○'))
       div.style.color = '#FFFFFF99'
       div.style.fontSize = '19px'
@@ -90,40 +87,8 @@ export const makeMonthsTable: TableMaker = (now, dates) => {
       div.style.fontSize = '19px'
     }
 
-    cell.appendChild(div)
-  })
-  return table
-}
-
-export const makeSeasonsTable: TableMaker = (now, dates) => {
-  const { table, cells } = makeElements(dates.length)
-  cells.forEach((cell, i) => {
-    const date = dates[i]
-    if (date === null) return
-    const div = document.createElement('div')
-    div.className = 'fill'
-    div.style.backgroundColor = getSeasonColor(
-      date.getFullYear(),
-      date.getMonth(),
-      date.getDate(),
-    )
-
-    if (
-      getIndexInSeason(
-        date,
-        getSeason(date.getFullYear(), date.getMonth(), date.getDate()),
-      ) === 0
-    ) {
-      div.appendChild(document.createTextNode('○'))
-      div.style.color = '#FFFFFF99'
-      div.style.fontSize = '19px'
-    }
-
-    if (isSameDay(now, date)) {
-      div.appendChild(document.createTextNode('●'))
-      div.style.color = '#FFFFFF99'
-      div.style.fontSize = '19px'
-    }
+    if (monthDay < 8 && i > 14) div.style.left = '1px'
+    if (monthDay === monthDays && weekDay !== 6) div.style.top = '1px'
 
     cell.appendChild(div)
   })
@@ -135,19 +100,22 @@ export const makeQuartersTable: TableMaker = (now, dates) => {
   cells.forEach((cell, i) => {
     const date = dates[i]
     if (date === null) return
+    const year = date.getFullYear()
+    const month = date.getMonth()
+    const monthDay = date.getDate()
+    const season = getSeason(year, month, monthDay)
+    const seasonDay = getSeasonDay(new Date(year, month, monthDay), season)
+    const color = getDayColor(season, seasonDay)
+
+    const weekDay = date.getDay()
+    const quarter = getQuarter(year, month)
+    const quarterDay = getQuarterDay(date, quarter)
+
     const div = document.createElement('div')
     div.className = 'fill'
-    div.style.backgroundColor = getQuarterColor(
-      date.getFullYear(),
-      date.getMonth(),
-    )
+    div.style.backgroundColor = color
 
-    if (
-      getIndexInSeason(
-        date,
-        getSeason(date.getFullYear(), date.getMonth(), date.getDate()),
-      ) === 0
-    ) {
+    if (seasonDay === 1) {
       div.appendChild(document.createTextNode('○'))
       div.style.color = '#FFFFFF99'
       div.style.fontSize = '19px'
@@ -158,6 +126,47 @@ export const makeQuartersTable: TableMaker = (now, dates) => {
       div.style.color = '#FFFFFF99'
       div.style.fontSize = '19px'
     }
+
+    if (quarterDay < 8 && i > 14) div.style.left = '1px'
+    if (quarterDay === quarter.length && weekDay !== 6) div.style.top = '1px'
+
+    cell.appendChild(div)
+  })
+  return table
+}
+
+export const makeSeasonsTable: TableMaker = (now, dates) => {
+  const { table, cells } = makeElements(dates.length)
+  cells.forEach((cell, i) => {
+    const date = dates[i]
+    if (date === null) return
+    const year = date.getFullYear()
+    const month = date.getMonth()
+    const monthDay = date.getDate()
+    const season = getSeason(year, month, monthDay)
+    const seasonDay = getSeasonDay(new Date(year, month, monthDay), season)
+    const color = getDayColor(season, seasonDay)
+
+    const weekDay = date.getDay()
+
+    const div = document.createElement('div')
+    div.className = 'fill'
+    div.style.backgroundColor = color
+
+    if (seasonDay === 1) {
+      div.appendChild(document.createTextNode('○'))
+      div.style.color = '#FFFFFF99'
+      div.style.fontSize = '19px'
+    }
+
+    if (isSameDay(now, date)) {
+      div.appendChild(document.createTextNode('●'))
+      div.style.color = '#FFFFFF99'
+      div.style.fontSize = '19px'
+    }
+
+    if (seasonDay < 8 && i > 14) div.style.left = '1px'
+    if (seasonDay === season.length && weekDay !== 6) div.style.top = '1px'
 
     cell.appendChild(div)
   })

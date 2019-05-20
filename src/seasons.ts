@@ -14,29 +14,33 @@ export interface Season {
 }
 
 // TODO use real date/location math
-export const getSeason = (year: number, month: number, day: number): Season => {
-  if (month < 2 || (month === 2 && day < 20)) {
+export const getSeason = (
+  year: number,
+  month: number,
+  monthDay: number,
+): Season => {
+  if (month < 2 || (month === 2 && monthDay < 20)) {
     return {
       name: SeasonName.Winter,
       start: new Date(year - 1, 11, 21),
       length: 89,
     }
   }
-  if (month < 5 || (month === 5 && day < 21)) {
+  if (month < 5 || (month === 5 && monthDay < 21)) {
     return {
       name: SeasonName.Spring,
       start: new Date(year, 2, 20),
       length: 93,
     }
   }
-  if (month < 8 || (month === 8 && day < 22)) {
+  if (month < 8 || (month === 8 && monthDay < 22)) {
     return {
       name: SeasonName.Summer,
       start: new Date(year, 5, 21),
       length: 93,
     }
   }
-  if (month < 11 || (month === 11 && day < 21)) {
+  if (month < 11 || (month === 11 && monthDay < 21)) {
     return {
       name: SeasonName.Autumn,
       start: new Date(year, 8, 22),
@@ -45,7 +49,7 @@ export const getSeason = (year: number, month: number, day: number): Season => {
   }
 
   // Winter wraps
-  if (month === 11 && day >= 21) {
+  if (month === 11 && monthDay >= 21) {
     return {
       name: SeasonName.Winter,
       start: new Date(year, 11, 21),
@@ -56,8 +60,8 @@ export const getSeason = (year: number, month: number, day: number): Season => {
   throw new Error('Invalid date provided')
 }
 
-export const getIndexInSeason = (date: Date, season: Season): number => {
-  return differenceInCalendarDays(date, season.start)
+export const getSeasonDay = (date: Date, season: Season): number => {
+  return differenceInCalendarDays(date, season.start) + 1
 }
 
 export const getNextSeasonName = (name: SeasonName): SeasonName => {

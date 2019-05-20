@@ -3,20 +3,14 @@ import { addDays } from 'date-fns'
 
 import {
   getSeason,
-  getIndexInSeason,
   getSeasonStartColor,
   getNextSeasonName,
+  Season,
 } from './seasons'
 import { getMonthDays } from './dates'
 import { getQuarter } from './quarters'
 
-export const getDayColor = (
-  year: number,
-  month: number,
-  day: number,
-): string => {
-  const season = getSeason(year, month, day)
-  const index = getIndexInSeason(new Date(year, month, day), season)
+export const getDayColor = (season: Season, index: number): string => {
   const percentage = index / (season.length - 1)
   const colorStart = getSeasonStartColor(season.name)
   const colorEnd = getSeasonStartColor(getNextSeasonName(season.name))
@@ -32,9 +26,9 @@ export const getMonthColor = (year: number, month: number): string => {
 export const getSeasonColor = (
   year: number,
   month: number,
-  day: number,
+  monthDay: number,
 ): string => {
-  const season = getSeason(year, month, day)
+  const season = getSeason(year, month, monthDay)
   const start = season.start
   const end = addDays(season.start, season.length)
   return getRangeColor(
