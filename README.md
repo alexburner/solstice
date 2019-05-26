@@ -2,6 +2,8 @@
 
 Visualization of current year sun cycles
 
+[![](https://i.imgur.com/aOlFbnZ.png)](https://alexburner.github.io/solstice/)
+
 ## development
 
 ```sh
