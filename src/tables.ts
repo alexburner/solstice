@@ -31,7 +31,6 @@ const makeElements = (
 
 export const makeDaysTable: TableMaker = (now, dates) => {
   const { table, cells } = makeElements(dates.length)
-  let count = 0
   cells.forEach((cell, i) => {
     const date = dates[i]
     if (date === null) return
@@ -66,7 +65,6 @@ export const makeDaysTable: TableMaker = (now, dates) => {
     }
 
     cell.appendChild(div)
-    count++
   })
   return table
 }
