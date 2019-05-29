@@ -5,6 +5,10 @@ import { getQuarter, getQuarterDay } from './quarters'
 
 type TableMaker = (now: Date, dates: (Date | null)[]) => HTMLTableElement
 
+const EVENT_MARK = '○'
+const TODAY_MARK = '✕'
+const EVENT_SIZE = '19px'
+const TODAY_SIZE = '12px'
 const MARK_COLOR = '#444'
 const BORDER_STYLE = `1px solid ${MARK_COLOR}`
 
@@ -45,15 +49,15 @@ export const makeDaysTable: TableMaker = (now, dates) => {
     div.style.backgroundColor = color
 
     if (seasonDay === 1) {
-      div.appendChild(document.createTextNode('○'))
+      div.appendChild(document.createTextNode(EVENT_MARK))
       div.style.color = MARK_COLOR
-      div.style.fontSize = '19px'
+      div.style.fontSize = EVENT_SIZE
     }
 
     if (isSameDay(now, date)) {
-      div.appendChild(document.createTextNode('●'))
+      div.appendChild(document.createTextNode(TODAY_MARK))
       div.style.color = MARK_COLOR
-      div.style.fontSize = '19px'
+      div.style.fontSize = TODAY_SIZE
     }
 
     div.style.borderLeft = BORDER_STYLE
@@ -87,15 +91,15 @@ export const makeMonthsTable: TableMaker = (now, dates) => {
     div.style.backgroundColor = color
 
     if (seasonDay === 1) {
-      div.appendChild(document.createTextNode('○'))
+      div.appendChild(document.createTextNode(EVENT_MARK))
       div.style.color = MARK_COLOR
-      div.style.fontSize = '19px'
+      div.style.fontSize = EVENT_SIZE
     }
 
     if (isSameDay(now, date)) {
-      div.appendChild(document.createTextNode('●'))
+      div.appendChild(document.createTextNode(TODAY_MARK))
       div.style.color = MARK_COLOR
-      div.style.fontSize = '19px'
+      div.style.fontSize = TODAY_SIZE
     }
 
     if (monthDay < 8) {
@@ -129,15 +133,15 @@ export const makeSeasonsTable: TableMaker = (now, dates) => {
     div.style.backgroundColor = color
 
     if (seasonDay === 1) {
-      div.appendChild(document.createTextNode('○'))
+      div.appendChild(document.createTextNode(EVENT_MARK))
       div.style.color = MARK_COLOR
-      div.style.fontSize = '19px'
+      div.style.fontSize = EVENT_SIZE
     }
 
     if (isSameDay(now, date)) {
-      div.appendChild(document.createTextNode('●'))
+      div.appendChild(document.createTextNode(TODAY_MARK))
       div.style.color = MARK_COLOR
-      div.style.fontSize = '19px'
+      div.style.fontSize = TODAY_SIZE
     }
 
     if (seasonDay < 8) {
@@ -173,15 +177,15 @@ export const makeQuartersTable: TableMaker = (now, dates) => {
     div.style.backgroundColor = color
 
     if (seasonDay === 1) {
-      div.appendChild(document.createTextNode('○'))
+      div.appendChild(document.createTextNode(EVENT_MARK))
       div.style.color = MARK_COLOR
-      div.style.fontSize = '19px'
+      div.style.fontSize = EVENT_SIZE
     }
 
     if (isSameDay(now, date)) {
-      div.appendChild(document.createTextNode('●'))
+      div.appendChild(document.createTextNode(TODAY_MARK))
       div.style.color = MARK_COLOR
-      div.style.fontSize = '19px'
+      div.style.fontSize = TODAY_SIZE
     }
 
     if (quarterDay < 8) {
