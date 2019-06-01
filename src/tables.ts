@@ -1,4 +1,5 @@
-import { getSeason, getSeasonDay, getDayColor } from './seasons'
+import { getSeason, getSeasonDay } from './seasons'
+import { getDayColor } from './color'
 import { isSameDay } from 'date-fns'
 import { getMonthDays } from './dates'
 import { getQuarter, getQuarterDay } from './quarters'
@@ -12,23 +13,6 @@ const TODAY_SIZE = '12px'
 const MARK_COLOR = '#444'
 const BORDER_STYLE = `1px solid ${MARK_COLOR}`
 
-const makeElements = (
-  dayCount: number,
-): {
-  table: HTMLTableElement
-  cells: HTMLTableDataCellElement[]
-} => {
-  if (dayCount % 7) throw new Error(`${dayCount} % 7 has remainder`)
-  const table = document.createElement('table')
-  const rows = new Array(7).fill(null).map(() => document.createElement('tr'))
-  const cells = new Array(dayCount)
-    .fill(null)
-    .map(() => document.createElement('td'))
-  cells.forEach((cell, i) => rows[6 - (i % 7)].appendChild(cell))
-  rows.forEach(row => table.appendChild(row))
-  return { table, cells }
-}
-
 export const makeDaysTable: TableMaker = (now, dates) => {
   const { table, cells } = makeElements(dates.length)
   cells.forEach((cell, i) => {
@@ -38,7 +22,7 @@ export const makeDaysTable: TableMaker = (now, dates) => {
     const month = date.getMonth()
     const monthDay = date.getDate()
     const season = getSeason(year, month, monthDay)
-    const seasonDay = getSeasonDay(new Date(year, month, monthDay), season)
+    const seasonDay = getSeasonDay(season, year, month, monthDay)
     const color = getDayColor(season, seasonDay)
 
     const weekDay = date.getDay()
@@ -78,7 +62,7 @@ export const makeMonthsTable: TableMaker = (now, dates) => {
     const month = date.getMonth()
     const monthDay = date.getDate()
     const season = getSeason(year, month, monthDay)
-    const seasonDay = getSeasonDay(new Date(year, month, monthDay), season)
+    const seasonDay = getSeasonDay(season, year, month, monthDay)
     const color = getDayColor(season, seasonDay)
 
     const monthDays = getMonthDays(year, month)
@@ -121,7 +105,7 @@ export const makeSeasonsTable: TableMaker = (now, dates) => {
     const month = date.getMonth()
     const monthDay = date.getDate()
     const season = getSeason(year, month, monthDay)
-    const seasonDay = getSeasonDay(new Date(year, month, monthDay), season)
+    const seasonDay = getSeasonDay(season, year, month, monthDay)
     const color = getDayColor(season, seasonDay)
 
     const weekDay = date.getDay()
@@ -163,7 +147,7 @@ export const makeQuartersTable: TableMaker = (now, dates) => {
     const month = date.getMonth()
     const monthDay = date.getDate()
     const season = getSeason(year, month, monthDay)
-    const seasonDay = getSeasonDay(new Date(year, month, monthDay), season)
+    const seasonDay = getSeasonDay(season, year, month, monthDay)
     const color = getDayColor(season, seasonDay)
 
     const weekDay = date.getDay()
@@ -196,4 +180,21 @@ export const makeQuartersTable: TableMaker = (now, dates) => {
     cell.appendChild(div)
   })
   return table
+}
+
+const makeElements = (
+  dayCount: number,
+): {
+  table: HTMLTableElement
+  cells: HTMLTableDataCellElement[]
+} => {
+  if (dayCount % 7) throw new Error(`${dayCount} % 7 has remainder`)
+  const table = document.createElement('table')
+  const rows = new Array(7).fill(null).map(() => document.createElement('tr'))
+  const cells = new Array(dayCount)
+    .fill(null)
+    .map(() => document.createElement('td'))
+  cells.forEach((cell, i) => rows[6 - (i % 7)].appendChild(cell))
+  rows.forEach(row => table.appendChild(row))
+  return { table, cells }
 }
