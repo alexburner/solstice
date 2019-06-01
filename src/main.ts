@@ -11,7 +11,7 @@ const root = document.getElementById('root')
 if (!root) throw new Error('Failed to find root element')
 
 const now = new Date()
-const dates = makeYearDates(now)
+const dates = makeYearDates(now.getFullYear())
 
 root.appendChild(makeDaysTable(now, dates))
 root.appendChild(makeMonthsTable(now, dates))

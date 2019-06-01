@@ -10,10 +10,34 @@ export const getMonthDays = (year: number, month: number): number =>
 
 /**
  * Make an array of 365 dates
- * Note: padded with null to keep length divisible by 7
- * @param now unix time stamp of current moment
+ *
+ * @param year XXXX
+ * @returns dates padded with null to keep length divisible by 7
  */
-export const makeYearDates = (now: Date): (Date | null)[] => {
+export const makeYearDates = (year: number): (Date | null)[] => {
+  // Generate array of 365 dates
+  const startDate = new Date(year, 0, 1, 12)
+  const startTime = startDate.getTime()
+  const dates = new Array(365)
+    .fill(null)
+    .map((_, i) => new Date(startTime + i * HOURS_24_MS))
+
+  // Pad array to align days with weeks
+  const firstWeekDay = dates[0].getDay()
+  const lastWeekDay = dates[dates.length - 1].getDay()
+  dates.unshift(...new Array(firstWeekDay).fill(null))
+  dates.push(...new Array(6 - lastWeekDay).fill(null))
+
+  return dates
+}
+
+/**
+ * Make an array of 365 dates - with current month centered
+ *
+ * @param now unix time stamp of current moment
+ * @returns dates padded with null to keep length divisible by 7
+ */
+export const makeYearDates_centeredNowMonth = (now: Date): (Date | null)[] => {
   const year = now.getFullYear()
   const month = now.getMonth()
 
