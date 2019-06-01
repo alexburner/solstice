@@ -3,7 +3,7 @@ import { interpolateHcl } from 'd3-interpolate'
 import { SeasonName, Season, getNextSeasonName } from './seasons'
 import { ColorCommonInstance } from 'd3-color'
 
-type InterpolateColor = (
+export type InterpolateColor = (
   a: string | ColorCommonInstance,
   b: string | ColorCommonInstance,
 ) => (t: number) => string
@@ -22,8 +22,8 @@ export const getDayColor = (
 
 const getSeasonStartColor = (name: SeasonName): string => {
   let h = 0
-  const s = 55
-  const l = 60
+  const s = 48
+  const l = 54
   switch (name) {
     case SeasonName.Spring:
       h = 150

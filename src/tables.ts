@@ -1,19 +1,30 @@
-import { getSeason, getSeasonDay } from './seasons'
-import { getDayColor } from './color'
+import { getSeason, getSeasonDay, SeasonName } from './seasons'
+import { getDayColor, InterpolateColor } from './color'
 import { isSameDay } from 'date-fns'
 import { getMonthDays } from './dates'
 import { getQuarter, getQuarterDay } from './quarters'
 
-type TableMaker = (now: Date, dates: (Date | null)[]) => HTMLTableElement
+type TableMaker = (
+  now: Date,
+  dates: (Date | null)[],
+  interpolateColor: InterpolateColor,
+) => HTMLTableElement
 
-const EVENT_MARK = '○'
+const seasonMark = {
+  [SeasonName.Winter]: /*'◓'*/ '○',
+  [SeasonName.Spring]: /*'◐'*/ '○',
+  [SeasonName.Summer]: /*'◒'*/ '○',
+  [SeasonName.Autumn]: /*'◑'*/ '○',
+}
+
 const TODAY_MARK = '✕'
-const EVENT_SIZE = '19px'
 const TODAY_SIZE = '12px'
-const MARK_COLOR = '#444'
-const BORDER_STYLE = `1px solid ${MARK_COLOR}`
+const EVENT_SIZE = '19px'
+const MARK_COLOR = '#222222BB'
+const BORDER_COLOR = '#33333399'
+const BORDER_STYLE = `1px solid ${BORDER_COLOR}`
 
-export const makeDaysTable: TableMaker = (now, dates) => {
+export const makeDaysTable: TableMaker = (now, dates, interpolateColor) => {
   const { table, cells } = makeElements(dates.length)
   cells.forEach((cell, i) => {
     const date = dates[i]
@@ -23,7 +34,7 @@ export const makeDaysTable: TableMaker = (now, dates) => {
     const monthDay = date.getDate()
     const season = getSeason(year, month, monthDay)
     const seasonDay = getSeasonDay(season, year, month, monthDay)
-    const color = getDayColor(season, seasonDay)
+    const color = getDayColor(season, seasonDay, interpolateColor)
 
     const weekDay = date.getDay()
 
@@ -32,7 +43,7 @@ export const makeDaysTable: TableMaker = (now, dates) => {
     div.style.backgroundColor = color
 
     if (seasonDay === 1) {
-      div.appendChild(document.createTextNode(EVENT_MARK))
+      div.appendChild(document.createTextNode(seasonMark[season.name]))
       div.style.color = MARK_COLOR
       div.style.fontSize = EVENT_SIZE
     }
@@ -53,7 +64,7 @@ export const makeDaysTable: TableMaker = (now, dates) => {
   return table
 }
 
-export const makeMonthsTable: TableMaker = (now, dates) => {
+export const makeMonthsTable: TableMaker = (now, dates, interpolateColor) => {
   const { table, cells } = makeElements(dates.length)
   cells.forEach((cell, i) => {
     const date = dates[i]
@@ -63,7 +74,7 @@ export const makeMonthsTable: TableMaker = (now, dates) => {
     const monthDay = date.getDate()
     const season = getSeason(year, month, monthDay)
     const seasonDay = getSeasonDay(season, year, month, monthDay)
-    const color = getDayColor(season, seasonDay)
+    const color = getDayColor(season, seasonDay, interpolateColor)
 
     const monthDays = getMonthDays(year, month)
     const weekDay = date.getDay()
@@ -73,7 +84,7 @@ export const makeMonthsTable: TableMaker = (now, dates) => {
     div.style.backgroundColor = color
 
     if (seasonDay === 1) {
-      div.appendChild(document.createTextNode(EVENT_MARK))
+      div.appendChild(document.createTextNode(seasonMark[season.name]))
       div.style.color = MARK_COLOR
       div.style.fontSize = EVENT_SIZE
     }
@@ -96,7 +107,7 @@ export const makeMonthsTable: TableMaker = (now, dates) => {
   return table
 }
 
-export const makeSeasonsTable: TableMaker = (now, dates) => {
+export const makeSeasonsTable: TableMaker = (now, dates, interpolateColor) => {
   const { table, cells } = makeElements(dates.length)
   cells.forEach((cell, i) => {
     const date = dates[i]
@@ -106,7 +117,7 @@ export const makeSeasonsTable: TableMaker = (now, dates) => {
     const monthDay = date.getDate()
     const season = getSeason(year, month, monthDay)
     const seasonDay = getSeasonDay(season, year, month, monthDay)
-    const color = getDayColor(season, seasonDay)
+    const color = getDayColor(season, seasonDay, interpolateColor)
 
     const weekDay = date.getDay()
 
@@ -115,7 +126,7 @@ export const makeSeasonsTable: TableMaker = (now, dates) => {
     div.style.backgroundColor = color
 
     if (seasonDay === 1) {
-      div.appendChild(document.createTextNode(EVENT_MARK))
+      div.appendChild(document.createTextNode(seasonMark[season.name]))
       div.style.color = MARK_COLOR
       div.style.fontSize = EVENT_SIZE
     }
@@ -138,7 +149,7 @@ export const makeSeasonsTable: TableMaker = (now, dates) => {
   return table
 }
 
-export const makeQuartersTable: TableMaker = (now, dates) => {
+export const makeQuartersTable: TableMaker = (now, dates, interpolateColor) => {
   const { table, cells } = makeElements(dates.length)
   cells.forEach((cell, i) => {
     const date = dates[i]
@@ -148,7 +159,7 @@ export const makeQuartersTable: TableMaker = (now, dates) => {
     const monthDay = date.getDate()
     const season = getSeason(year, month, monthDay)
     const seasonDay = getSeasonDay(season, year, month, monthDay)
-    const color = getDayColor(season, seasonDay)
+    const color = getDayColor(season, seasonDay, interpolateColor)
 
     const weekDay = date.getDay()
     const quarter = getQuarter(year, month)
@@ -159,7 +170,7 @@ export const makeQuartersTable: TableMaker = (now, dates) => {
     div.style.backgroundColor = color
 
     if (seasonDay === 1) {
-      div.appendChild(document.createTextNode(EVENT_MARK))
+      div.appendChild(document.createTextNode(seasonMark[season.name]))
       div.style.color = MARK_COLOR
       div.style.fontSize = EVENT_SIZE
     }
