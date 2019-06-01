@@ -6,12 +6,7 @@ import {
   makeQuartersTable,
 } from './tables'
 import { InterpolateColor } from './color'
-import {
-  interpolateHcl,
-  interpolateCubehelix,
-  interpolateHsl,
-  interpolateRgb,
-} from 'd3-interpolate'
+import { interpolateHcl } from 'd3-interpolate'
 
 const root = document.getElementById('root')
 
@@ -29,10 +24,10 @@ function makeTableSet(interpolateColor: InterpolateColor): HTMLElement {
   return el
 }
 
-root.appendChild(makeTableSet(interpolateCubehelix))
-root.appendChild(document.createElement('hr'))
+// root.appendChild(makeTableSet(interpolateCubehelix))
+// root.appendChild(document.createElement('hr'))
 root.appendChild(makeTableSet(interpolateHcl))
-root.appendChild(document.createElement('hr'))
-root.appendChild(makeTableSet(interpolateHsl))
-root.appendChild(document.createElement('hr'))
-root.appendChild(makeTableSet(interpolateRgb))
+// root.appendChild(document.createElement('hr'))
+// root.appendChild(makeTableSet(interpolateHsl))
+// root.appendChild(document.createElement('hr'))
+// root.appendChild(makeTableSet(interpolateRgb))
