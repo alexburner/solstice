@@ -1,7 +1,3 @@
-:root {
-  --cell-size: 16px;
-}
-
 body {
   background: #444;
   color: red;
@@ -20,11 +16,12 @@ table {
 }
 
 td {
+  $cell-size: 16px;
   position: relative;
   padding: 0;
-  width: var(--cell-size);
-  height: var(--cell-size);
-  line-height: var(--cell-size);
+  width: $cell-size;
+  height: $cell-size;
+  line-height: $cell-size;
   text-align: center;
 
   // border: 1px solid #333;
