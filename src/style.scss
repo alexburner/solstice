@@ -9,8 +9,13 @@ body {
   padding: 24px;
 }
 
+#root {
+  text-align: center;
+}
+
 table {
-  margin: 24px auto;
+  display: inline-block;
+  margin: 12px;
   border-collapse: collapse;
 }
 

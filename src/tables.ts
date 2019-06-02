@@ -36,8 +36,6 @@ export const makeDaysTable: TableMaker = (now, dates, interpolateColor) => {
     const seasonDay = getSeasonDay(season, year, month, monthDay)
     const color = getDayColor(season, seasonDay, interpolateColor)
 
-    const weekDay = date.getDay()
-
     const div = document.createElement('div')
     div.className = 'fill'
     div.style.backgroundColor = color
@@ -55,9 +53,7 @@ export const makeDaysTable: TableMaker = (now, dates, interpolateColor) => {
     }
 
     div.style.borderLeft = BORDER_STYLE
-    if (weekDay !== 6) {
-      div.style.borderTop = BORDER_STYLE
-    }
+    div.style.borderTop = BORDER_STYLE
 
     cell.appendChild(div)
   })
@@ -95,11 +91,11 @@ export const makeMonthsTable: TableMaker = (now, dates, interpolateColor) => {
       div.style.fontSize = TODAY_SIZE
     }
 
-    if (monthDay < 8) {
-      div.style.borderLeft = BORDER_STYLE
+    if (monthDays - monthDay < 7) {
+      div.style.borderBottom = BORDER_STYLE
     }
-    if (monthDay === monthDays && weekDay !== 6) {
-      div.style.borderTop = BORDER_STYLE
+    if (monthDay === 1 && weekDay !== 0) {
+      div.style.borderLeft = BORDER_STYLE
     }
 
     cell.appendChild(div)
@@ -137,11 +133,11 @@ export const makeSeasonsTable: TableMaker = (now, dates, interpolateColor) => {
       div.style.fontSize = TODAY_SIZE
     }
 
-    if (seasonDay < 8) {
-      div.style.borderLeft = BORDER_STYLE
+    if (season.length - seasonDay < 7) {
+      div.style.borderBottom = BORDER_STYLE
     }
-    if (seasonDay === season.length && weekDay !== 6) {
-      div.style.borderTop = BORDER_STYLE
+    if (seasonDay === 1 && weekDay !== 0) {
+      div.style.borderLeft = BORDER_STYLE
     }
 
     cell.appendChild(div)
@@ -181,11 +177,11 @@ export const makeQuartersTable: TableMaker = (now, dates, interpolateColor) => {
       div.style.fontSize = TODAY_SIZE
     }
 
-    if (quarterDay < 8) {
-      div.style.borderLeft = BORDER_STYLE
+    if (quarter.length - quarterDay < 7) {
+      div.style.borderBottom = BORDER_STYLE
     }
-    if (quarterDay === quarter.length && weekDay !== 6) {
-      div.style.borderTop = BORDER_STYLE
+    if (quarterDay === 1 && weekDay !== 0) {
+      div.style.borderLeft = BORDER_STYLE
     }
 
     cell.appendChild(div)
@@ -201,11 +197,13 @@ const makeElements = (
 } => {
   if (dayCount % 7) throw new Error(`${dayCount} % 7 has remainder`)
   const table = document.createElement('table')
-  const rows = new Array(7).fill(null).map(() => document.createElement('tr'))
+  const rows = new Array(dayCount / 7)
+    .fill(null)
+    .map(() => document.createElement('tr'))
   const cells = new Array(dayCount)
     .fill(null)
     .map(() => document.createElement('td'))
-  cells.forEach((cell, i) => rows[6 - (i % 7)].appendChild(cell))
+  cells.forEach((cell, i) => rows[Math.floor(i / 7)].appendChild(cell))
   rows.forEach(row => table.appendChild(row))
   return { table, cells }
 }
