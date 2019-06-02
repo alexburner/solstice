@@ -22,7 +22,7 @@ export const getDayColor = (
 
 const getSeasonStartColor = (name: SeasonName): string => {
   let h = 0
-  const s = 54
+  const s = 50
   const l = 58
   switch (name) {
     case SeasonName.Spring:
