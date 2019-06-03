@@ -14,6 +14,7 @@ export interface Season {
 }
 
 // TODO use real date/location math
+// Current dates are for 2018/19
 export const getSeason = (
   year: number,
   month: number,
@@ -43,7 +44,7 @@ export const getSeason = (
   if (month < 11 || (month === 11 && monthDay < 21)) {
     return {
       name: SeasonName.Autumn,
-      start: new Date(year, 8, 22),
+      start: new Date(year, 8, 23),
       length: 90,
     }
   }
@@ -52,7 +53,7 @@ export const getSeason = (
   if (month === 11 && monthDay >= 21) {
     return {
       name: SeasonName.Winter,
-      start: new Date(year, 11, 21),
+      start: new Date(year, 11, 22),
       length: 89,
     }
   }
