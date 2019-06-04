@@ -13,49 +13,75 @@ export interface Season {
   length: number
 }
 
-// TODO use real date/location math
-// Current dates are for 2018/19
+//
+// TODO: real solar landmark calculations
+//
+
+const TODO_MONTH_DAYS = {
+  PrevWinter: 21,
+  Spring: 20,
+  Summer: 23,
+  Autumn: 22,
+  Winter: 22,
+  NextSpring: 20,
+}
+
+const TODO_DATES = {
+  PrevWinter: new Date(2018, 12 - 1, TODO_MONTH_DAYS.PrevWinter),
+  Spring: new Date(2019, 3 - 1, TODO_MONTH_DAYS.Spring),
+  Summer: new Date(2019, 6 - 1, TODO_MONTH_DAYS.Summer),
+  Autumn: new Date(2019, 9 - 1, TODO_MONTH_DAYS.Autumn),
+  Winter: new Date(2019, 12 - 1, TODO_MONTH_DAYS.Winter),
+  NextSpring: new Date(2020, 3 - 1, TODO_MONTH_DAYS.NextSpring),
+}
+
+const TODO_SEASONS = (() => ({
+  PrevWinter: {
+    name: SeasonName.Winter,
+    start: TODO_DATES.PrevWinter,
+    length: differenceInCalendarDays(TODO_DATES.Spring, TODO_DATES.PrevWinter),
+  },
+  Spring: {
+    name: SeasonName.Spring,
+    start: TODO_DATES.Spring,
+    length: differenceInCalendarDays(TODO_DATES.Summer, TODO_DATES.Spring),
+  },
+  Summer: {
+    name: SeasonName.Summer,
+    start: TODO_DATES.Summer,
+    length: differenceInCalendarDays(TODO_DATES.Autumn, TODO_DATES.Summer),
+  },
+  Autumn: {
+    name: SeasonName.Autumn,
+    start: TODO_DATES.Autumn,
+    length: differenceInCalendarDays(TODO_DATES.Winter, TODO_DATES.Autumn),
+  },
+  Winter: {
+    name: SeasonName.Winter,
+    start: TODO_DATES.Winter,
+    length: differenceInCalendarDays(TODO_DATES.NextSpring, TODO_DATES.Winter),
+  },
+}))()
+
 export const getSeason = (
-  year: number,
+  _year: number,
   month: number,
   monthDay: number,
 ): Season => {
-  if (month < 2 || (month === 2 && monthDay < 20)) {
-    return {
-      name: SeasonName.Winter,
-      start: new Date(year - 1, 11, 21),
-      length: 89,
-    }
+  if (month < 2 || (month === 2 && monthDay < TODO_MONTH_DAYS.Spring)) {
+    return TODO_SEASONS.PrevWinter
   }
-  if (month < 5 || (month === 5 && monthDay < 21)) {
-    return {
-      name: SeasonName.Spring,
-      start: new Date(year, 2, 20),
-      length: 93,
-    }
+  if (month < 5 || (month === 5 && monthDay < TODO_MONTH_DAYS.Summer)) {
+    return TODO_SEASONS.Spring
   }
-  if (month < 8 || (month === 8 && monthDay < 22)) {
-    return {
-      name: SeasonName.Summer,
-      start: new Date(year, 5, 21),
-      length: 93,
-    }
+  if (month < 8 || (month === 8 && monthDay < TODO_MONTH_DAYS.Autumn)) {
+    return TODO_SEASONS.Summer
   }
-  if (month < 11 || (month === 11 && monthDay < 21)) {
-    return {
-      name: SeasonName.Autumn,
-      start: new Date(year, 8, 23),
-      length: 90,
-    }
+  if (month < 11 || (month === 11 && monthDay < TODO_MONTH_DAYS.Winter)) {
+    return TODO_SEASONS.Autumn
   }
-
-  // Winter wraps
-  if (month === 11 && monthDay >= 21) {
-    return {
-      name: SeasonName.Winter,
-      start: new Date(year, 11, 22),
-      length: 89,
-    }
+  if (month === 11 && monthDay >= TODO_MONTH_DAYS.NextSpring) {
+    return TODO_SEASONS.Winter
   }
 
   throw new Error('Invalid date provided')
