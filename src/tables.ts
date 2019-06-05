@@ -18,8 +18,8 @@ const seasonMark = {
 }
 
 const TODAY_MARK = '✕'
-const TODAY_SIZE = '12px'
-const EVENT_SIZE = '19px'
+const TODAY_SIZE = '9px'
+const EVENT_SIZE = '16px'
 const MARK_COLOR = '#222222BB'
 const BORDER_COLOR = '#33333399'
 const BORDER_STYLE = `1px solid ${BORDER_COLOR}`
@@ -103,6 +103,50 @@ export const makeMonthsTable: TableMaker = (now, dates, interpolateColor) => {
   return table
 }
 
+export const makeQuartersTable: TableMaker = (now, dates, interpolateColor) => {
+  const { table, cells } = makeElements(dates.length)
+  cells.forEach((cell, i) => {
+    const date = dates[i]
+    if (date === null) return
+    const year = date.getFullYear()
+    const month = date.getMonth()
+    const monthDay = date.getDate()
+    const season = getSeason(year, month, monthDay)
+    const seasonDay = getSeasonDay(season, year, month, monthDay)
+    const color = getDayColor(season, seasonDay, interpolateColor)
+
+    const weekDay = date.getDay()
+    const quarter = getQuarter(year, month)
+    const quarterDay = getQuarterDay(date, quarter)
+
+    const div = document.createElement('div')
+    div.className = 'fill'
+    div.style.backgroundColor = color
+
+    if (seasonDay === 1) {
+      div.appendChild(document.createTextNode(seasonMark[season.name]))
+      div.style.color = MARK_COLOR
+      div.style.fontSize = EVENT_SIZE
+    }
+
+    if (isSameDay(now, date)) {
+      div.appendChild(document.createTextNode(TODAY_MARK))
+      div.style.color = MARK_COLOR
+      div.style.fontSize = TODAY_SIZE
+    }
+
+    if (quarter.length - quarterDay < 7) {
+      div.style.borderBottom = BORDER_STYLE
+    }
+    if (quarterDay === 1 && weekDay !== 0) {
+      div.style.borderLeft = BORDER_STYLE
+    }
+
+    cell.appendChild(div)
+  })
+  return table
+}
+
 export const makeSeasonsTable: TableMaker = (now, dates, interpolateColor) => {
   const { table, cells } = makeElements(dates.length)
   cells.forEach((cell, i) => {
@@ -145,7 +189,7 @@ export const makeSeasonsTable: TableMaker = (now, dates, interpolateColor) => {
   return table
 }
 
-export const makeQuartersTable: TableMaker = (now, dates, interpolateColor) => {
+export const makeYearTable: TableMaker = (now, dates, interpolateColor) => {
   const { table, cells } = makeElements(dates.length)
   cells.forEach((cell, i) => {
     const date = dates[i]
@@ -156,10 +200,6 @@ export const makeQuartersTable: TableMaker = (now, dates, interpolateColor) => {
     const season = getSeason(year, month, monthDay)
     const seasonDay = getSeasonDay(season, year, month, monthDay)
     const color = getDayColor(season, seasonDay, interpolateColor)
-
-    const weekDay = date.getDay()
-    const quarter = getQuarter(year, month)
-    const quarterDay = getQuarterDay(date, quarter)
 
     const div = document.createElement('div')
     div.className = 'fill'
@@ -175,13 +215,6 @@ export const makeQuartersTable: TableMaker = (now, dates, interpolateColor) => {
       div.appendChild(document.createTextNode(TODAY_MARK))
       div.style.color = MARK_COLOR
       div.style.fontSize = TODAY_SIZE
-    }
-
-    if (quarter.length - quarterDay < 7) {
-      div.style.borderBottom = BORDER_STYLE
-    }
-    if (quarterDay === 1 && weekDay !== 0) {
-      div.style.borderLeft = BORDER_STYLE
     }
 
     cell.appendChild(div)

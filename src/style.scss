@@ -2,7 +2,7 @@ body {
   background: #444;
   color: red;
   box-sizing: border-box;
-  padding: 24px;
+  padding: 12px;
 }
 
 #root {
@@ -11,12 +11,12 @@ body {
 
 table {
   display: inline-block;
-  margin: 12px;
+  margin: 64px 12px;
   border-collapse: collapse;
 }
 
 td {
-  $cell-size: 16px;
+  $cell-size: 14px;
   position: relative;
   padding: 0;
   width: $cell-size;
