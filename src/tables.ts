@@ -1,8 +1,8 @@
-import { getSeason, getSeasonDay, SeasonName } from './seasons'
-import { getDayColor, InterpolateColor } from './color'
+import { getSeason, getSeasonDay, SeasonName } from './util/seasons'
+import { getDayColor, InterpolateColor } from './util/color'
 import { isSameDay } from 'date-fns'
-import { getMonthDays } from './dates'
-import { getQuarter, getQuarterDay } from './quarters'
+import { getMonthDays } from './util/dates'
+import { getQuarter, getQuarterDay } from './util/quarters'
 
 type TableMaker = (
   now: Date,
@@ -25,7 +25,7 @@ const BORDER_COLOR = '#33333399'
 const BORDER_STYLE = `1px solid ${BORDER_COLOR}`
 
 export const makeDaysTable: TableMaker = (now, dates, interpolateColor) => {
-  const { table, cells } = makeElements(dates.length)
+  const { table, header, cells } = makeElements(dates.length)
   cells.forEach((cell, i) => {
     const date = dates[i]
     if (date === null) return
@@ -61,7 +61,7 @@ export const makeDaysTable: TableMaker = (now, dates, interpolateColor) => {
 }
 
 export const makeMonthsTable: TableMaker = (now, dates, interpolateColor) => {
-  const { table, cells } = makeElements(dates.length)
+  const { table, header, cells } = makeElements(dates.length)
   cells.forEach((cell, i) => {
     const date = dates[i]
     if (date === null) return
@@ -104,7 +104,7 @@ export const makeMonthsTable: TableMaker = (now, dates, interpolateColor) => {
 }
 
 export const makeQuartersTable: TableMaker = (now, dates, interpolateColor) => {
-  const { table, cells } = makeElements(dates.length)
+  const { table, header, cells } = makeElements(dates.length)
   cells.forEach((cell, i) => {
     const date = dates[i]
     if (date === null) return
@@ -148,7 +148,7 @@ export const makeQuartersTable: TableMaker = (now, dates, interpolateColor) => {
 }
 
 export const makeSeasonsTable: TableMaker = (now, dates, interpolateColor) => {
-  const { table, cells } = makeElements(dates.length)
+  const { table, header, cells } = makeElements(dates.length)
   cells.forEach((cell, i) => {
     const date = dates[i]
     if (date === null) return
@@ -226,17 +226,28 @@ const makeElements = (
   dayCount: number,
 ): {
   table: HTMLTableElement
+  header: HTMLTableHeaderCellElement
   cells: HTMLTableDataCellElement[]
 } => {
   if (dayCount % 7) throw new Error(`${dayCount} % 7 has remainder`)
   const table = document.createElement('table')
+
+  const header = document.createElement('th')
+  header.colSpan = 7
+  const headerRow = document.createElement('tr')
+  headerRow.appendChild(header)
+  table.appendChild(headerRow)
+
   const rows = new Array(dayCount / 7)
     .fill(null)
     .map(() => document.createElement('tr'))
+
   const cells = new Array(dayCount)
     .fill(null)
     .map(() => document.createElement('td'))
+
   cells.forEach((cell, i) => rows[Math.floor(i / 7)].appendChild(cell))
   rows.forEach(row => table.appendChild(row))
-  return { table, cells }
+
+  return { table, header, cells }
 }

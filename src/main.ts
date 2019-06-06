@@ -1,4 +1,4 @@
-import { makeYearDates } from './dates'
+import { makeYearDates } from './util/dates'
 import {
   makeDaysTable,
   makeMonthsTable,
@@ -6,7 +6,7 @@ import {
   makeQuartersTable,
   makeYearTable,
 } from './tables'
-import { InterpolateColor } from './color'
+import { InterpolateColor } from './util/color'
 import { interpolateHcl } from 'd3-interpolate'
 
 const root = document.getElementById('root')
