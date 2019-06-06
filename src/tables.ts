@@ -28,7 +28,8 @@ const seasonMark = {
 const TODAY_MARK = '✕'
 const TODAY_SIZE = '9px'
 const EVENT_SIZE = '16px'
-const MARK_COLOR = '#222222BB'
+const TODAY_MARK_COLOR = '#222222BB'
+const EVENT_MARK_COLOR = '#222222BB'
 const BORDER_COLOR = '#33333399'
 const BORDER_STYLE = `1px solid ${BORDER_COLOR}`
 
@@ -51,13 +52,13 @@ export const makeDaysTable: TableMaker = (now, dates, interpolateColor) => {
 
     if (seasonDay === 1) {
       div.appendChild(document.createTextNode(seasonMark[season.name]))
-      div.style.color = MARK_COLOR
+      div.style.color = EVENT_MARK_COLOR
       div.style.fontSize = EVENT_SIZE
     }
 
     if (isSameDay(now, date)) {
       div.appendChild(document.createTextNode(TODAY_MARK))
-      div.style.color = MARK_COLOR
+      div.style.color = TODAY_MARK_COLOR
       div.style.fontSize = TODAY_SIZE
     }
 
@@ -91,13 +92,13 @@ export const makeMonthsTable: TableMaker = (now, dates, interpolateColor) => {
 
     if (seasonDay === 1) {
       div.appendChild(document.createTextNode(seasonMark[season.name]))
-      div.style.color = MARK_COLOR
+      div.style.color = EVENT_MARK_COLOR
       div.style.fontSize = EVENT_SIZE
     }
 
     if (isSameDay(now, date)) {
       div.appendChild(document.createTextNode(TODAY_MARK))
-      div.style.color = MARK_COLOR
+      div.style.color = TODAY_MARK_COLOR
       div.style.fontSize = TODAY_SIZE
     }
 
@@ -136,13 +137,13 @@ export const makeQuartersTable: TableMaker = (now, dates, interpolateColor) => {
 
     if (seasonDay === 1) {
       div.appendChild(document.createTextNode(seasonMark[season.name]))
-      div.style.color = MARK_COLOR
+      div.style.color = EVENT_MARK_COLOR
       div.style.fontSize = EVENT_SIZE
     }
 
     if (isSameDay(now, date)) {
       div.appendChild(document.createTextNode(TODAY_MARK))
-      div.style.color = MARK_COLOR
+      div.style.color = TODAY_MARK_COLOR
       div.style.fontSize = TODAY_SIZE
     }
 
@@ -179,13 +180,13 @@ export const makeSeasonsTable: TableMaker = (now, dates, interpolateColor) => {
 
     if (seasonDay === 1) {
       div.appendChild(document.createTextNode(seasonMark[season.name]))
-      div.style.color = MARK_COLOR
+      div.style.color = EVENT_MARK_COLOR
       div.style.fontSize = EVENT_SIZE
     }
 
     if (isSameDay(now, date)) {
       div.appendChild(document.createTextNode(TODAY_MARK))
-      div.style.color = MARK_COLOR
+      div.style.color = TODAY_MARK_COLOR
       div.style.fontSize = TODAY_SIZE
     }
 
