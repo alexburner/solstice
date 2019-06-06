@@ -1,8 +1,16 @@
 import { getSeason, getSeasonDay, SeasonName } from './util/seasons'
-import { getDayColor, InterpolateColor } from './util/color'
+import {
+  getDayColor,
+  InterpolateColor,
+  getSeasonColor,
+  getQuarterColor,
+  getMonthColor,
+  getDayColorForDate,
+} from './util/color'
 import { isSameDay } from 'date-fns'
 import { getMonthDays } from './util/dates'
 import { getQuarter, getQuarterDay } from './util/quarters'
+import { dayStr, monthStr, quarterStr, seasonStr } from './util/labels'
 
 type TableMaker = (
   now: Date,
@@ -26,6 +34,7 @@ const BORDER_STYLE = `1px solid ${BORDER_COLOR}`
 
 export const makeDaysTable: TableMaker = (now, dates, interpolateColor) => {
   const { table, header, cells } = makeElements(dates.length)
+  header.appendChild(document.createTextNode(dayStr(now)))
   cells.forEach((cell, i) => {
     const date = dates[i]
     if (date === null) return
@@ -62,6 +71,7 @@ export const makeDaysTable: TableMaker = (now, dates, interpolateColor) => {
 
 export const makeMonthsTable: TableMaker = (now, dates, interpolateColor) => {
   const { table, header, cells } = makeElements(dates.length)
+  header.appendChild(document.createTextNode(monthStr(now)))
   cells.forEach((cell, i) => {
     const date = dates[i]
     if (date === null) return
@@ -105,6 +115,7 @@ export const makeMonthsTable: TableMaker = (now, dates, interpolateColor) => {
 
 export const makeQuartersTable: TableMaker = (now, dates, interpolateColor) => {
   const { table, header, cells } = makeElements(dates.length)
+  header.appendChild(document.createTextNode(quarterStr(now)))
   cells.forEach((cell, i) => {
     const date = dates[i]
     if (date === null) return
@@ -149,6 +160,7 @@ export const makeQuartersTable: TableMaker = (now, dates, interpolateColor) => {
 
 export const makeSeasonsTable: TableMaker = (now, dates, interpolateColor) => {
   const { table, header, cells } = makeElements(dates.length)
+  header.appendChild(document.createTextNode(seasonStr(now)))
   cells.forEach((cell, i) => {
     const date = dates[i]
     if (date === null) return
@@ -189,53 +201,22 @@ export const makeSeasonsTable: TableMaker = (now, dates, interpolateColor) => {
   return table
 }
 
-export const makeYearTable: TableMaker = (now, dates, interpolateColor) => {
-  const { table, cells } = makeElements(dates.length)
-  cells.forEach((cell, i) => {
-    const date = dates[i]
-    if (date === null) return
-    const year = date.getFullYear()
-    const month = date.getMonth()
-    const monthDay = date.getDate()
-    const season = getSeason(year, month, monthDay)
-    const seasonDay = getSeasonDay(season, year, month, monthDay)
-    const color = getDayColor(season, seasonDay, interpolateColor)
-
-    const div = document.createElement('div')
-    div.className = 'fill'
-    div.style.backgroundColor = color
-
-    if (seasonDay === 1) {
-      div.appendChild(document.createTextNode(seasonMark[season.name]))
-      div.style.color = MARK_COLOR
-      div.style.fontSize = EVENT_SIZE
-    }
-
-    if (isSameDay(now, date)) {
-      div.appendChild(document.createTextNode(TODAY_MARK))
-      div.style.color = MARK_COLOR
-      div.style.fontSize = TODAY_SIZE
-    }
-
-    cell.appendChild(div)
-  })
-  return table
-}
-
 const makeElements = (
   dayCount: number,
 ): {
   table: HTMLTableElement
-  header: HTMLTableHeaderCellElement
+  header: HTMLSpanElement
   cells: HTMLTableDataCellElement[]
 } => {
   if (dayCount % 7) throw new Error(`${dayCount} % 7 has remainder`)
   const table = document.createElement('table')
 
-  const header = document.createElement('th')
-  header.colSpan = 7
+  const header = document.createElement('span')
+  const headerCell = document.createElement('th')
   const headerRow = document.createElement('tr')
-  headerRow.appendChild(header)
+  headerCell.colSpan = 7
+  headerCell.appendChild(header)
+  headerRow.appendChild(headerCell)
   table.appendChild(headerRow)
 
   const rows = new Array(dayCount / 7)

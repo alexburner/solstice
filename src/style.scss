@@ -1,22 +1,53 @@
+// <hacks via Medium>
+html {
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+}
 body {
-  background: #444;
-  color: red;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: 'liga' on;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -moz-font-feature-settings: 'liga' on;
+}
+// </end hacks>
+
+$background: #3f3f3f;
+$cell-size: 14px;
+$whitespace: 2 * $cell-size / 3;
+
+body {
   box-sizing: border-box;
-  padding: 12px;
+  padding: 2% $whitespace;
+  background: $background;
 }
 
 #root {
   text-align: center;
+  min-width: 470px; // hack - guess & check
 }
 
 table {
   display: inline-block;
-  margin: 64px 12px;
+  margin: $whitespace;
   border-collapse: collapse;
 }
 
+th {
+  padding-bottom: 4 * $cell-size / 5;
+
+  span {
+    display: inline-block;
+    letter-spacing: 0.1em;
+    font-size: 16px;
+    font-family: Courier, monospace;
+    font-weight: normal;
+    color: white;
+    opacity: 0.8;
+  }
+}
+
 td {
-  $cell-size: 14px;
   position: relative;
   padding: 0;
   width: $cell-size;

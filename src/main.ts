@@ -4,7 +4,6 @@ import {
   makeMonthsTable,
   makeSeasonsTable,
   makeQuartersTable,
-  makeYearTable,
 } from './tables'
 import { InterpolateColor } from './util/color'
 import { interpolateHcl } from 'd3-interpolate'
@@ -22,7 +21,6 @@ function makeTableSet(interpolateColor: InterpolateColor): HTMLElement {
   el.appendChild(makeMonthsTable(now, dates, interpolateColor))
   el.appendChild(makeQuartersTable(now, dates, interpolateColor))
   el.appendChild(makeSeasonsTable(now, dates, interpolateColor))
-  el.appendChild(makeYearTable(now, dates, interpolateColor))
   return el
 }
 
