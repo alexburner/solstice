@@ -1,12 +1,5 @@
 import { getSeason, getSeasonDay, SeasonName } from './util/seasons'
-import {
-  getDayColor,
-  InterpolateColor,
-  getSeasonColor,
-  getQuarterColor,
-  getMonthColor,
-  getDayColorForDate,
-} from './util/color'
+import { getDayColor, InterpolateColor } from './util/color'
 import { isSameDay } from 'date-fns'
 import { getMonthDays } from './util/dates'
 import { getQuarter, getQuarterDay } from './util/quarters'

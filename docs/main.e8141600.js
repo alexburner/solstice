@@ -546,4 +546,4 @@ module.exports={addDays:require("./add_days/index.js"),addHours:require("./add_h
 },{"@babel/runtime-corejs2/helpers/defineProperty":"n5FU","./util/seasons":"0zpr","./util/color":"9SqQ","date-fns":"cWQX","./util/dates":"wY46","./util/quarters":"zP82","./util/labels":"ozWm"}],"ZCfc":[function(require,module,exports) {
 "use strict";var e=require("./util/dates"),a=require("./tables"),t=require("d3-interpolate"),r=document.getElementById("root");if(!r)throw new Error("Failed to find root element");var l=new Date,n=(0,e.makeYearDates)(l.getFullYear());function d(e){var t=document.createElement("div");return t.appendChild((0,a.makeDaysTable)(l,n,e)),t.appendChild((0,a.makeMonthsTable)(l,n,e)),t.appendChild((0,a.makeQuartersTable)(l,n,e)),t.appendChild((0,a.makeSeasonsTable)(l,n,e)),t}r.appendChild(d(t.interpolateHcl));
 },{"./util/dates":"wY46","./tables":"xw7c","d3-interpolate":"k9aH"}]},{},["ZCfc"], null)
-//# sourceMappingURL=main.dd0274ba.js.map
+//# sourceMappingURL=main.e8141600.js.map
