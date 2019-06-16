@@ -1,4 +1,7 @@
 import { differenceInCalendarDays } from 'date-fns'
+import { march, june, september, december } from 'astronomia/src/solstice'
+import { JDToCalendar } from 'astronomia/src/julian'
+import { memoize } from 'lodash-es'
 
 export const enum SeasonName {
   Spring = 'Spring',
@@ -64,10 +67,12 @@ const TODO_SEASONS = (() => ({
 }))()
 
 export const getSeason = (
-  _year: number,
+  year: number,
   month: number,
   monthDay: number,
 ): Season => {
+  getYearSeasons(year)
+
   if (month < 2 || (month === 2 && monthDay < TODO_MONTH_DAYS.Spring)) {
     return TODO_SEASONS.PrevWinter
   }
@@ -108,4 +113,27 @@ export const getNextSeasonName = (name: SeasonName): SeasonName => {
     case SeasonName.Winter:
       return SeasonName.Spring
   }
+}
+
+const getYearSeasons = memoize((year: number) => {
+  const dates = {
+    PrevWinter: getSeasonDate(year - 1, december),
+    Spring: getSeasonDate(year, march),
+    Summer: getSeasonDate(year, june),
+    Autumn: getSeasonDate(year, september),
+    Winter: getSeasonDate(year, december),
+    NextSpring: getSeasonDate(year + 1, march),
+  }
+
+  console.log('old', TODO_DATES.PrevWinter)
+  console.log('new', dates.PrevWinter)
+})
+
+const getSeasonDate = (
+  year: number,
+  yearToJD: (year: number) => number,
+): Date => {
+  const jd = yearToJD(year)
+  const { month, day } = JDToCalendar(jd)
+  return new Date(year, month - 1, Math.floor(day))
 }
