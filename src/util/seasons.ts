@@ -3,6 +3,8 @@ import { march, june, september, december } from 'astronomia/src/solstice'
 import { JDToCalendar } from 'astronomia/src/julian'
 import { memoize } from 'lodash-es'
 
+import { getMemoKey } from './getMemoKey'
+
 export const enum SeasonName {
   Spring = 'Spring',
   Summer = 'Summer',
@@ -16,41 +18,38 @@ export interface Season {
   length: number
 }
 
-export const getSeason = (
-  year: number,
-  month: number,
-  monthDay: number,
-): Season => {
-  const { days, seasons } = getYearSeasons(year)
+export const getSeason = memoize(
+  (year: number, month: number, monthDay: number): Season => {
+    const { days, seasons } = getYearSeasons(year)
 
-  if (month < 2 || (month === 2 && monthDay < days.Spring)) {
-    return seasons.PrevWinter
-  }
-  if (month < 5 || (month === 5 && monthDay < days.Summer)) {
-    return seasons.Spring
-  }
-  if (month < 8 || (month === 8 && monthDay < days.Autumn)) {
-    return seasons.Summer
-  }
-  if (month < 11 || (month === 11 && monthDay < days.Winter)) {
-    return seasons.Autumn
-  }
-  if (month === 11 && monthDay >= days.NextSpring) {
-    return seasons.Winter
-  }
+    if (month < 2 || (month === 2 && monthDay < days.Spring)) {
+      return seasons.PrevWinter
+    }
+    if (month < 5 || (month === 5 && monthDay < days.Summer)) {
+      return seasons.Spring
+    }
+    if (month < 8 || (month === 8 && monthDay < days.Autumn)) {
+      return seasons.Summer
+    }
+    if (month < 11 || (month === 11 && monthDay < days.Winter)) {
+      return seasons.Autumn
+    }
+    if (month === 11 && monthDay >= days.NextSpring) {
+      return seasons.Winter
+    }
 
-  throw new Error('Invalid date provided')
-}
+    throw new Error('Invalid date provided')
+  },
+  getMemoKey,
+)
 
-export const getSeasonDay = (
-  season: Season,
-  year: number,
-  month: number,
-  monthDay: number,
-): number => {
-  const date = new Date(year, month, monthDay)
-  return differenceInCalendarDays(date, season.start) + 1
-}
+export const getSeasonDay = memoize(
+  (season: Season, year: number, month: number, monthDay: number): number => {
+    const date = new Date(year, month, monthDay)
+    return differenceInCalendarDays(date, season.start) + 1
+  },
+  getMemoKey,
+)
 
 export const getNextSeasonName = (name: SeasonName): SeasonName => {
   switch (name) {
@@ -113,13 +112,13 @@ const getYearSeasons = memoize((year: number) => {
   }
 
   return { days, seasons }
-})
+}, getMemoKey)
 
-const getSeasonDate = (
-  year: number,
-  yearToJD: (year: number) => number,
-): Date => {
-  const jd = yearToJD(year)
-  const { month, day } = JDToCalendar(jd)
-  return new Date(year, month - 1, Math.floor(day))
-}
+const getSeasonDate = memoize(
+  (year: number, yearToJD: (year: number) => number): Date => {
+    const jd = yearToJD(year)
+    const { month, day } = JDToCalendar(jd)
+    return new Date(year, month - 1, Math.floor(day))
+  },
+  getMemoKey,
+)
