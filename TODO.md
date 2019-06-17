@@ -1,3 +1,2 @@
-- finish real solstice math
 - memoize more things
 - make X and O play nice

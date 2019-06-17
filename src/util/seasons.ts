@@ -16,77 +16,27 @@ export interface Season {
   length: number
 }
 
-//
-// TODO: real solar landmark calculations
-//
-
-const TODO_MONTH_DAYS = {
-  PrevWinter: 21,
-  Spring: 20,
-  Summer: 23,
-  Autumn: 22,
-  Winter: 22,
-  NextSpring: 20,
-}
-
-const TODO_DATES = {
-  PrevWinter: new Date(2018, 12 - 1, TODO_MONTH_DAYS.PrevWinter),
-  Spring: new Date(2019, 3 - 1, TODO_MONTH_DAYS.Spring),
-  Summer: new Date(2019, 6 - 1, TODO_MONTH_DAYS.Summer),
-  Autumn: new Date(2019, 9 - 1, TODO_MONTH_DAYS.Autumn),
-  Winter: new Date(2019, 12 - 1, TODO_MONTH_DAYS.Winter),
-  NextSpring: new Date(2020, 3 - 1, TODO_MONTH_DAYS.NextSpring),
-}
-
-const TODO_SEASONS = (() => ({
-  PrevWinter: {
-    name: SeasonName.Winter,
-    start: TODO_DATES.PrevWinter,
-    length: differenceInCalendarDays(TODO_DATES.Spring, TODO_DATES.PrevWinter),
-  },
-  Spring: {
-    name: SeasonName.Spring,
-    start: TODO_DATES.Spring,
-    length: differenceInCalendarDays(TODO_DATES.Summer, TODO_DATES.Spring),
-  },
-  Summer: {
-    name: SeasonName.Summer,
-    start: TODO_DATES.Summer,
-    length: differenceInCalendarDays(TODO_DATES.Autumn, TODO_DATES.Summer),
-  },
-  Autumn: {
-    name: SeasonName.Autumn,
-    start: TODO_DATES.Autumn,
-    length: differenceInCalendarDays(TODO_DATES.Winter, TODO_DATES.Autumn),
-  },
-  Winter: {
-    name: SeasonName.Winter,
-    start: TODO_DATES.Winter,
-    length: differenceInCalendarDays(TODO_DATES.NextSpring, TODO_DATES.Winter),
-  },
-}))()
-
 export const getSeason = (
   year: number,
   month: number,
   monthDay: number,
 ): Season => {
-  getYearSeasons(year)
+  const { days, seasons } = getYearSeasons(year)
 
-  if (month < 2 || (month === 2 && monthDay < TODO_MONTH_DAYS.Spring)) {
-    return TODO_SEASONS.PrevWinter
+  if (month < 2 || (month === 2 && monthDay < days.Spring)) {
+    return seasons.PrevWinter
   }
-  if (month < 5 || (month === 5 && monthDay < TODO_MONTH_DAYS.Summer)) {
-    return TODO_SEASONS.Spring
+  if (month < 5 || (month === 5 && monthDay < days.Summer)) {
+    return seasons.Spring
   }
-  if (month < 8 || (month === 8 && monthDay < TODO_MONTH_DAYS.Autumn)) {
-    return TODO_SEASONS.Summer
+  if (month < 8 || (month === 8 && monthDay < days.Autumn)) {
+    return seasons.Summer
   }
-  if (month < 11 || (month === 11 && monthDay < TODO_MONTH_DAYS.Winter)) {
-    return TODO_SEASONS.Autumn
+  if (month < 11 || (month === 11 && monthDay < days.Winter)) {
+    return seasons.Autumn
   }
-  if (month === 11 && monthDay >= TODO_MONTH_DAYS.NextSpring) {
-    return TODO_SEASONS.Winter
+  if (month === 11 && monthDay >= days.NextSpring) {
+    return seasons.Winter
   }
 
   throw new Error('Invalid date provided')
@@ -125,8 +75,44 @@ const getYearSeasons = memoize((year: number) => {
     NextSpring: getSeasonDate(year + 1, march),
   }
 
-  console.log('old', TODO_DATES.PrevWinter)
-  console.log('new', dates.PrevWinter)
+  const days = {
+    PrevWinter: dates.PrevWinter.getDate(),
+    Spring: dates.Spring.getDate(),
+    Summer: dates.Summer.getDate(),
+    Autumn: dates.Autumn.getDate(),
+    Winter: dates.Winter.getDate(),
+    NextSpring: dates.NextSpring.getDate(),
+  }
+
+  const seasons = {
+    PrevWinter: {
+      name: SeasonName.Winter,
+      start: dates.PrevWinter,
+      length: differenceInCalendarDays(dates.Spring, dates.PrevWinter),
+    },
+    Spring: {
+      name: SeasonName.Spring,
+      start: dates.Spring,
+      length: differenceInCalendarDays(dates.Summer, dates.Spring),
+    },
+    Summer: {
+      name: SeasonName.Summer,
+      start: dates.Summer,
+      length: differenceInCalendarDays(dates.Autumn, dates.Summer),
+    },
+    Autumn: {
+      name: SeasonName.Autumn,
+      start: dates.Autumn,
+      length: differenceInCalendarDays(dates.Winter, dates.Autumn),
+    },
+    Winter: {
+      name: SeasonName.Winter,
+      start: dates.Winter,
+      length: differenceInCalendarDays(dates.NextSpring, dates.Winter),
+    },
+  }
+
+  return { days, seasons }
 })
 
 const getSeasonDate = (
