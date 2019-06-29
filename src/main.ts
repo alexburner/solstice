@@ -19,8 +19,8 @@ function makeTableSet(interpolateColor: InterpolateColor): HTMLElement {
   const el = document.createElement('div')
   el.appendChild(makeDaysTable(now, dates, interpolateColor))
   el.appendChild(makeMonthsTable(now, dates, interpolateColor))
-  el.appendChild(makeQuartersTable(now, dates, interpolateColor))
   el.appendChild(makeSeasonsTable(now, dates, interpolateColor))
+  el.appendChild(makeQuartersTable(now, dates, interpolateColor))
   return el
 }
 
